@@ -1,0 +1,6 @@
+node_modules/
+.env
+# webflow-repo/ - NOT ignored; scraped content is committed by GitHub Actions
+*.log
+.DS_Store
+worker/.wrangler/

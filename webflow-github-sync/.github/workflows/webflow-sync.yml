@@ -1,0 +1,87 @@
+name: Webflow Sync
+
+on:
+  repository_dispatch:
+    types: [webflow_publish]
+  schedule:
+    # Backup sync every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      full_sync:
+        description: 'Force full re-scrape (ignore cache)'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        working-directory: webflow-github-sync
+        run: |
+          npm ci 2>/dev/null || npm install
+
+      - name: Validate environment
+        run: |
+          if [ -z "${{ secrets.WEBFLOW_SITE_URL }}" ]; then
+            echo "::error::WEBFLOW_SITE_URL secret is not set. Add it in repository Settings > Secrets"
+            exit 1
+          fi
+
+      - name: Run incremental scraper
+        working-directory: webflow-github-sync
+        env:
+          WEBFLOW_SITE_URL: ${{ secrets.WEBFLOW_SITE_URL }}
+        run: |
+          if [ "${{ github.event.inputs.full_sync }}" = "true" ]; then
+            echo "Running full sync (--full)"
+            node sync-service/incremental-scraper.js --full
+          else
+            echo "Running incremental sync"
+            node sync-service/incremental-scraper.js
+          fi
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet webflow-github-sync/webflow-repo/; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes detected - skipping commit"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected - will commit"
+          fi
+
+      - name: Commit and push changes
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          COMMIT_MSG="chore: sync Webflow site [$TIMESTAMP]
+
+          - Triggered by: ${{ github.event_name }}
+          - Run ID: ${{ github.run_id }}
+          - Incremental sync completed"
+
+          git add webflow-github-sync/webflow-repo/
+          git commit -m "$COMMIT_MSG"
+          git push

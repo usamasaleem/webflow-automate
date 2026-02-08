@@ -1,0 +1,10 @@
+{
+  "name": "webflow-sync-service",
+  "version": "1.0.0",
+  "description": "Incremental scraper for Webflow sites - uses Node.js built-ins only",
+  "main": "incremental-scraper.js",
+  "scripts": {
+    "sync": "node incremental-scraper.js",
+    "sync:full": "node incremental-scraper.js --full"
+  }
+}

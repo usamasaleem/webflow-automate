@@ -1,0 +1,12 @@
+{
+  "name": "webflow-github-sync",
+  "version": "1.0.0",
+  "description": "Automated Webflow to GitHub sync with intelligent incremental scraping",
+  "scripts": {
+    "sync": "node sync-service/incremental-scraper.js",
+    "sync:full": "node sync-service/incremental-scraper.js --full",
+    "worker:deploy": "cd worker && wrangler deploy",
+    "worker:dev": "cd worker && wrangler dev",
+    "setup": "npm install && cd sync-service && npm install"
+  }
+}

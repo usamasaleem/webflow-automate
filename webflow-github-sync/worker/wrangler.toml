@@ -1,0 +1,10 @@
+name = "webflow-webhook"
+main = "webhook-worker.js"
+compatibility_date = "2024-01-01"
+workers_dev = true
+
+# Set via: wrangler secret put GITHUB_TOKEN
+# Set via: wrangler secret put GITHUB_REPO
+[vars]
+# GITHUB_REPO can be set here for non-sensitive config, or as secret
+# GITHUB_REPO = "username/webflow-project"
