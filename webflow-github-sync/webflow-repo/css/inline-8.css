@@ -1,0 +1,9 @@
+.home_why_card_content_overflow , 
+.home_why_card_icon ,
+.home_why_image1 ,
+.home_why_image2 ,
+.home_why_image3
+{
+transition: all 0.4s ease-in; 
+
+}

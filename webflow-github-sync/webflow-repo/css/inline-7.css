@@ -1,0 +1,20 @@
+.home_work_card_item img{ 
+   
+    transition: all 0.4s ease-in;
+}
+
+@media (pointer: fine) {
+    .home_work_card_item:hover .home_work_card_image3{ 
+    filter: saturate(100%);
+    transform: translate(0, -50%)  scale(1.1) ;
+}
+.home_work_card_item:hover .home_work_card_image1{ 
+    filter: saturate(100%);
+    transform: scale(1.1) ;
+}
+
+.home_work_card_item:hover .home_work_card_image2{ 
+    filter: saturate(100%);
+    transform: scale(1.1) ;
+}
+}

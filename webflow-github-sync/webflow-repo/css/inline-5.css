@@ -1,0 +1,41 @@
+/* CSS Button */
+
+button {
+  background-color: unset;
+  padding: unset;
+  text-align: inherit;
+}
+button:not(:disabled) {cursor: pointer;}
+
+/* Utility / Clickable */
+.wf-design-mode .c-clickable_wrap {z-index: 0;}
+.c-clickable_wrap a[href="#"] {display: none;}
+.c-clickable_wrap a[href="#"] ~ button {display: block;}
+
+/* Root */
+:root {
+  --cubic-default: cubic-bezier(0.65, 0.05, 0, 1);
+  --duration-default: 0.5s;
+  --animation-default: var(--duration-default) var(--cubic-default);
+}
+
+/* Text Button */
+.u-text-button::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  bottom: 0px;
+  left: 0px;
+  transition: transform var(--animation-default);
+  background: currentColor;
+ 	transform-origin: right;
+  transform: scaleX(0) rotate(0.001deg);
+}
+
+@media (hover:hover) and (pointer:fine) {
+  .u-text-button:hover::after {
+    transform-origin: left;
+    transform: scaleX(1) rotate(0.001deg);
+  }
+}

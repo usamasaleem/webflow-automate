@@ -1,0 +1,13 @@
+/* CSS | Global */
+
+/* GSAP Animation */
+/* Prevent Flicker*/
+html:not(.gsap-not-found) [data-prevent-flicker='true'] { 
+	visibility: hidden; 
+}
+
+/* Mask */
+.line-mask, .word-mask, .char-mask { 
+  padding-block: 0.125em; 
+  margin-block: -0.125em; 
+}

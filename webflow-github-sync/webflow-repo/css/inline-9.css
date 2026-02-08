@@ -1,0 +1,23 @@
+.progress-circle svg {
+  transform: rotate(-90deg);
+}
+
+
+  /* Outer track */
+  .track {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 10;
+    opacity: 0.35;
+  }
+
+  /* Red animated ring */
+.progress {
+  fill: none;
+  stroke: red;
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 283;   /* correct circumference for r=45 */
+  stroke-dashoffset: 283;  /* start empty */
+  transition: stroke-dashoffset 1s ease;
+}

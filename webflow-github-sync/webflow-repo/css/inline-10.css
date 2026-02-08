@@ -1,0 +1,5 @@
+.faq_accordian_answer_wrap,
+.faq_accordian_icon,
+[data-faq="question"]{
+transition: all 0.5s ease;
+}
